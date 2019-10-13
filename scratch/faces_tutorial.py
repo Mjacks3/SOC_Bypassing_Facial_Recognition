@@ -201,7 +201,7 @@ ngf = 64
 ndf = 64
 
 # Number of training epochs
-num_epochs = 5
+num_epochs = 1
 
 # Learning rate for optimizers
 lr = 0.0002
@@ -261,11 +261,11 @@ dataloader = torch.utils.data.DataLoader(dataset, batch_size=batch_size,
 device = torch.device("cuda:0" if (torch.cuda.is_available() and ngpu > 0) else "cpu")
 
 # Plot some training images
-real_batch = next(iter(dataloader))
-plt.figure(figsize=(8,8))
-plt.axis("off")
-plt.title("Training Images")
-plt.imshow(np.transpose(vutils.make_grid(real_batch[0].to(device)[:64], padding=2, normalize=True).cpu(),(1,2,0)))
+#real_batch = next(iter(dataloader))
+#plt.figure(figsize=(8,8))
+#plt.axis("off")
+#plt.title("Training Images")
+#plt.imshow(np.transpose(vutils.make_grid(real_batch[0].to(device)[:64], padding=2, normalize=True).cpu(),(1,2,0)))
 
 
 
@@ -687,12 +687,12 @@ plt.show()
 # 
 
 #%%capture
-fig = plt.figure(figsize=(8,8))
-plt.axis("off")
-ims = [[plt.imshow(np.transpose(i,(1,2,0)), animated=True)] for i in img_list]
-ani = animation.ArtistAnimation(fig, ims, interval=1000, repeat_delay=1000, blit=True)
+#fig = plt.figure(figsize=(8,8))
+#plt.axis("off")
+#ims = [[plt.imshow(np.transpose(i,(1,2,0)), animated=True)] for i in img_list]
+#ani = animation.ArtistAnimation(fig, ims, interval=1000, repeat_delay=1000, blit=True)
 
-HTML(ani.to_jshtml())
+#HTML(ani.to_jshtml())
 
 
 ######################################################################
