@@ -305,7 +305,6 @@ for epoch in range(num_epochs):
 
 
 
-
 plt.figure(figsize=(10,5))
 plt.title("Generator and Discriminator Loss During Training")
 plt.plot(G_losses,label="G")
