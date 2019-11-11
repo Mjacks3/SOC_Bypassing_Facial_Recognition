@@ -31,7 +31,8 @@ manualSeed = random.randint(1, 10000)
 
 
 device = torch.device("cuda:0" if (torch.cuda.is_available()) else "cpu")
-
+device = "cpu"
+device = "cuda"
 
 # custom weights initialization called on netG and netD
 def weights_init(m):
@@ -707,7 +708,7 @@ def validate(netD, netG, source):
 
     # Copy the content of 
     # source to destination 
-    shutil.copyfile(source, "data/auth_test_validate/validate/"  + source) 
+    shutil.copyfile(source, "data/auth_test_validate/validate/"  + "validate.pgm") 
 
     
 
@@ -727,8 +728,6 @@ def validate(netD, netG, source):
             real_cpu = data[0].to(device)
             output = netD(real_cpu).view(-1)
             
-
-            
             outcome =  "Authentic"
             action = "Access: Granted"
 
@@ -738,6 +737,8 @@ def validate(netD, netG, source):
             
             print("FREE-M.A.N. predicts sample ~"+source+"~ is "+ outcome+ " with "  + str( int(round(abs(output[0].item() -.5)/.50 , 2) *100) ) + "% confidence. " + action )
             print("Raw OUTPUT: "   + str(output[0].item())  +"\n" )
+
+    os.remove("data/auth_test_validate/validate/validate.pgm")
     
     return 0
 
@@ -758,7 +759,7 @@ if __name__ == "__main__":
     #TODO List flag args
     parser = argparse.ArgumentParser(description='Service Oriented Computing:  Project Free-M.A.N. Interface')
     parser.add_argument('-l', '--load', action='store', help='Load existing GAN. Omit to work on new instance') 
-    parser.add_argument('-c', '--config', action='store',nargs="*", help='Initialize new GAN and configure HyperParameters. Possible arguments are [~]') #Use nargs = '*' for multiple arguments
+    parser.add_argument('-c', '--config', action='store',nargs="*", help='Initialize new GAN and configure HyperParameters.') #Use nargs = '*' for multiple arguments
     
     parser.add_argument('-1', '--non_gan_train', action='store', nargs="*", help='Train Mode lwith provided positive and negative class examples without Generator + Display Loss')
     parser.add_argument('-2', '--train', action='store', nargs="*", help='Train Model on  provided positive examples and Display Training Results')
