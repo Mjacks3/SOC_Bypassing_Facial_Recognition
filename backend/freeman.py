@@ -130,8 +130,8 @@ def save_project(name, discriminator,generator):
     if not os.path.exists(name):
         os.makedirs(name)
 
-    torch.save(project[0][0], name+"/"+name+"D")
-    torch.save(project[0][1], name+"/"+name+"G")
+    torch.save(discriminator, name+"/"+name+"D")
+    torch.save(generator, name+"/"+name+"G")
     return 0 
 
 def instantiate(configurations):

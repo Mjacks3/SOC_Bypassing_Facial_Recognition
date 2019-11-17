@@ -8,6 +8,7 @@ Although you can use them, for a more unique website, replace these images with 
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="#" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
@@ -82,15 +83,17 @@ Although you can use them, for a more unique website, replace these images with 
      
                     
                     <div>
+                     <form id="uploadform2" method="post" enctype="multipart/form-data">
 
-                     <input type="text" class="form-control" placeholder="Enter Account Name">
+                     <input type="text" id="test_name" class="form-control" placeholder="Enter User Name">
                      <br>
-                     <input type="file" class="custom-file-input " id="inputGroupFile01">
-                     <label for="inputGroupFile01">Select selfie verification Picture</label>
-                    
+                     <input type="file" name="file"  class="custom-file-input " id="test_data">
+                     <label for="test_data">Select Headshot Verification Picture</label>
+                    </form>
+
                     <br>
                     <br>
-                    <button type="button" class="btn btn-lg btn-primary " style="background-color:blue">Verify Picture</button>
+                    <button type="button" id="initialize_test_button" class="btn btn-lg btn-primary " style="background-color:blue">Verify Picture</button>
 
                     </div>
                 </div>                
@@ -110,6 +113,7 @@ Although you can use them, for a more unique website, replace these images with 
     
     <!-- Custom Javascript -->
     <script src="static/js/custom.js"></script>
+    <script src="static/js/freeman.js"></script>
     <!----
 
     Answering own question, as there is a better way using HTML5 is available.
