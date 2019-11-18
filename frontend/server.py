@@ -2,6 +2,9 @@ from flask import Flask
 from flask import request, Response, render_template, flash, redirect, Blueprint, g, json, jsonify, session, url_for
 import os
 import zipfile
+import smtplib
+from email.mime.multipart import MIMEMultipart 
+from email.mime.text import MIMEText
 
 from freeman import *
 device = "cpu"
@@ -14,6 +17,28 @@ app = Flask(__name__)
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
+
+def notify_completion():
+    msg = MIMEMultipart()
+    msg['From'] = 'doitpaws@gmail.com'
+    msg['To'] = 'doitpaws@gmail.com'
+    msg['Subject'] = 'Account Creation on Project Freeman!'
+    message = 'You can access the Existing Account Page and Verify your identity'
+    msg.attach(MIMEText(message))
+
+    mailserver = smtplib.SMTP('smtp.gmail.com',587)
+    # identify ourselves to smtp gmail client
+    mailserver.ehlo()
+    # secure our email with tls encryption
+    mailserver.starttls()
+    # re-identify ourselves as an encrypted connection
+    mailserver.ehlo()
+    mailserver.login('doitpaws@gmail.com', 'temp_passw0rd_dumb@ass')
+
+    mailserver.sendmail('doitpaws@gmail.com','doitpaws@gmail.com',msg.as_string())
+    #mailserver.sendmail('me@gmail.com','you@gmail.com',msg.as_string())
+
+    mailserver.quit()
 
 
 @app.route("/hello")
@@ -49,40 +74,71 @@ def acct_creation():
         files = request.files[account_name]
         filename = files.filename
 
-        """
+        if not os.path.exists("user_account_models/"+account_name ):
+            os.makedirs("user_account_models/"+account_name )
+        else: 
+            print("Account Already Exists!!!")
+            return jsonify(message = 'Account Already Exists'), 200
+
+        
         updir = os.path.join(basedir, 'upload/')
-        zip_loc = os.path.join(updir, filename)
+        zip_loc = os.path.join(updir, account_name)
         files.save(zip_loc)
 
         with zipfile.ZipFile(zip_loc,"r") as zip_ref:
             zip_ref.extractall("user_train_data")
+
+        os.rename("user_train_data/"+ filename[0:-4] , "user_train_data/"+ account_name)
+
         os.remove(zip_loc)
-        """
+
         project = []
         name = str(manualSeed)
         project.append(instantiate([]))
-
-
-        if not os.path.exists("user_account_models/"+account_name ):
-            os.makedirs("user_account_models/"+account_name )
-        else: 
-            print("Account Already Exits!!!")
-            return jsonify(message = 'Account Already Exists'), 200
-
+        global most_recent_name
+        most_recent_name = account_name
 
         #Always save project at end of run
         save_project("user_account_models/"+account_name, account_name ,project[0][1],project[0][0])
         
-
         print(" \nProgam Finished. \nExiting... Yeet")
 
-        return jsonify(message = 'file uploaded successfully'), 200
+        return jsonify(message = 'EZ 1'),200
 
-    #req_json = request.get_json(silent=True) or request.form
-    print("Acct_creation_Start!")
-    #print(req_json)
+    return jsonify(message = 'Nothing Happened'), 200
 
-    return jsonify(message = 'file uploaded successfully'), 200
+
+@app.route("/train", methods=['GET','POST'])
+def train():
+    print("Made it!")
+    print(most_recent_name)
+    #load proj
+    project = []
+    project_trained= []
+
+    project.append(load_project("user_account_models/"+most_recent_name, most_recent_name))
+
+
+    #train 
+    configurations = {
+        "num_epochs":1,
+        "beta":0.6,
+        "learning_rate":.0004,
+        "pos_source":"user_train_data/"+most_recent_name
+    }
+
+
+    project_trained.append( train_project_plus_negatives(project[0][0],project[0][1], configurations))
+
+    # then save
+    save_project("user_account_models/"+most_recent_name, most_recent_name ,project_trained[0][1],project_trained[0][0])
+        
+    #email noify
+    print("stub notify")
+    notify_completion()
+
+    return jsonify(message = 'EZ 2'), 200
+
 
 
 #Utils
@@ -107,7 +163,7 @@ def acct_test():
         files.save("user_account_models/"+account_name+"/"+account_name+"_verify")
 
         
-        validate(project[0][0],project[0][1],"user_account_models/"+account_name+"/"+account_name+"_verify")
+        validate(project[0][1],project[0][0],"user_account_models/"+account_name+"/"+account_name+"_verify")
 
 
         #os.remove("user_account_models/"+account_name+"/"+account_name+"_verify")
@@ -124,4 +180,5 @@ def acct_test():
 
 
 if __name__ == "__main__":
+    most_recent_name = ""
     app.run(host='0.0.0.0',port= 1234)

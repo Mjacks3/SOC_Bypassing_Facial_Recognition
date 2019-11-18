@@ -17,6 +17,15 @@ $(function() {
             console.log(textStatus);
             console.log(jqXHR);
             console.log('Success!');
+           $.ajax({
+                type: 'POST',
+                url: '/train',
+                data: JSON.stringify({"name":training_name}),
+                contentType: false,
+                processData: false,
+                dataType: 'json'
+            })
+
         }).fail(function(data){
             console.log('error!');
         });});}); 

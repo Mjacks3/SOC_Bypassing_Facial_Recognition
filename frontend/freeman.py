@@ -420,10 +420,10 @@ def train_project_auto(netD, netG, configurations):
 
 def train_project_plus_negatives(netD, netG, configurations):
     #Train with GANS and user submitted negative class images. Good for specializing on a topic 
-
+    print(configurations)
     # Root directory for dataset
     dataroot_pos= "data/basic"
-    dataroot_neg= "data/negative"
+    dataroot_neg= "data/store_stock_negative"
 
     # Number of workers for dataloader
     workers = 4 #should be contoled by cpu resources, not set by user. Lookup to see what the otimal number for this i
@@ -444,50 +444,48 @@ def train_project_plus_negatives(netD, netG, configurations):
     # Beta1 hyperparam for Adam optimizers
     beta1 = 0.5
 
+    if "batch_size" in configurations:
+        try:
+            batch_size = configurations["batch_size"]
+        except ValueError:
+            print("Batch Size: Non Numeric Parameter Entered. Proceeding...")
 
+    if "image_size" in configurations:
+        try:
+            image_size = configurations["image_size"]
+        except ValueError:
+            print("Image Size: Non Numeric Parameter Entered. Proceeding...")
 
-    for config in configurations:
-        if "batch_size" in config:
-            try:
-                batch_size = int(config.split(":")[-1])
-            except ValueError:
-                print("Batch Size: Non Numeric Parameter Entered. Proceeding...")
+    if "num_epochs" in configurations:
+        try:
+            num_epochs = configurations["num_epochs"]
+        except ValueError:
+            print("Number Epochs Size: Non Numeric Parameter Entered. Proceeding...")
 
-        elif "image_size" in config:
-            try:
-                image_size = int(config.split(":")[-1])
-            except ValueError:
-                print("Image Size: Non Numeric Parameter Entered. Proceeding...")
+    if "learning_rate" in configurations:
+        try:
+            lr = configurations["learning_rate"]
+        except ValueError:
+            print("Learning Rate: Non Numeric Parameter Entered. Proceeding...")
+            
+    if "beta" in configurations:
+        try:
+            beta1 = configurations["beta"]
+        except ValueError:
+            print("Beta: Non Numeric Parameter Entered. Proceeding...")
 
-        elif "num_epochs" in config:
-            try:
-                num_epochs = int(config.split(":")[-1])
-            except ValueError:
-                print("Number Epochs Size: Non Numeric Parameter Entered. Proceeding...")
+    if "pos_source" in configurations:
 
-        elif "learning_rate" in config:
-            try:
-                lr = float(config.split(":")[-1])
-            except ValueError:
-                print("Learning Rate: Non Numeric Parameter Entered. Proceeding...")
-                
-        elif "beta" in config:
-            try:
-                beta1 = float( config.split(":")[-1])
-            except ValueError:
-                print("Beta: Non Numeric Parameter Entered. Proceeding...")
+        if os.path.exists(configurations["pos_source"]): 
+            dataroot_pos = configurations["pos_source"]
+        else:
+            print("Data Source Not Found. Using Defaults")
 
-        elif "pos_source" in config:
-            if os.path.exists("data/"+ config.split(":")[-1]): 
-                dataroot_pos = "data/" + config.split(":")[-1]
-            else:
-                print("Data Source Not Found. Using Defaults")
-
-        elif "neg_source" in config:
-            if os.path.exists("data/"+ config.split(":")[-1]): 
-                dataroot_neg = "data/" + config.split(":")[-1]
-            else:
-                print("Data Source Not Found.Using Defaults")
+    if "neg_source" in configurations:
+        if os.path.exists(configurations["neg_source"]): 
+            dataroot_neg = configurations["neg_source"]
+        else:
+            print("Data Source Not Found.Using Defaults")
         
 
     print("\nConifgs ")
@@ -668,7 +666,7 @@ def train_project_plus_negatives(netD, netG, configurations):
                 img_list.append(vutils.make_grid(fake, padding=2, normalize=True))
                 
             iters += 1
-
+    """
     plt.figure(figsize=(10,5))
     plt.title("Generator and Discriminator Loss During Training")
     plt.plot(G_losses,label="G")
@@ -693,8 +691,9 @@ def train_project_plus_negatives(netD, netG, configurations):
     plt.title("Fake Images")
     plt.imshow(np.transpose(img_list[-1],(1,2,0)))
     plt.show()
+    """
 
-    return 0
+    return netD, netG
 
 
 
