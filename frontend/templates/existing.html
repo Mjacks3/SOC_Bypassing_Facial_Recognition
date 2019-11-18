@@ -79,25 +79,53 @@ Although you can use them, for a more unique website, replace these images with 
 
                 <div class="col-sm-6">
                     <h2 class="section-header">Existing User</h2>
-                    <p class="lead text-muted">Enter your name and upload a selfie to verify your identity!</p>
+                    <p class="lead text-muted">Enter your name and upload a headshot to verify your identity!</p>
      
-                    
+                    <input type="text" id="test_name" class="form-control" placeholder="Enter User Name">
+                    <hr>
                     <div>
-                     <form id="uploadform2" method="post" enctype="multipart/form-data">
+ 
 
-                     <input type="text" id="test_name" class="form-control" placeholder="Enter User Name">
+
+                     <p class="lead text-muted">Select an Input Type</p>
+
+                     <input type="radio" id="manual_radio" name="test_type"  checked="checked" value="A">Manual Upload<br>
+                     <input type="radio" id="auto_radio"   name="test_type" value="B"> Auto <br>  
+
+                     <form id="uploadform2" method="post" enctype="multipart/form-data">
                      <br>
                      <input type="file" name="file"  class="custom-file-input " id="test_data">
                      <label for="test_data">Select Headshot Verification Picture</label>
+                     <br>
+                     <br>
+                     <button type="button" id="initialize_test_button" class="btn btn-lg btn-primary " style="background-color:blue">Verify Picture</button>
+ 
+
                     </form>
 
+   
+
+
                     <br>
+
+                    <form id="uploadform3" method="post" style="display: none" multipart/form-data">
+                    <div class="camera">
+                    <video id="video">Video stream not available.</video> <button id="startbutton">Take photo</button>
+                     <canvas id="canvas"></canvas> 
+                    </div>
                     <br>
-                    <button type="button" id="initialize_test_button" class="btn btn-lg btn-primary " style="background-color:blue">Verify Picture</button>
+                    <button type="button" id="initialize_test_button_v2" class="btn btn-lg btn-primary " style="background-color:blue">Verify Picture</button>
+                    </form>
 
                     </div>
-                </div>                
+                </div> 
+
+
+                
+  
+
             </div>
+
         </div>
     </section>
 
@@ -113,93 +141,11 @@ Although you can use them, for a more unique website, replace these images with 
     
     <!-- Custom Javascript -->
     <script src="static/js/custom.js"></script>
-    <script src="static/js/freeman.js"></script>
-    <!----
-
-    Answering own question, as there is a better way using HTML5 is available.
-
-    Option 1, Accessing default camera from the system
-    
-    HTML
-    
-    Video Tag
-    <br/>
-    <div class="camera">
-        <video id="video">Video stream not available.</video>
-        <button id="startbutton">Take photo</button>
-    </div>
-    <br/>
-    Canvas
-    <br/>
-    <canvas id="canvas"></canvas>
+    <script src="static/js/freeman_2.js"></script>
 
 
-    <script> var width = 320;
-            var height = 0;
-            var streaming = false;
-            
-            navigator.mediaDevices.getUserMedia({video: true, audio: false})
-                    .then(function (stream) {
-                        video.srcObject = stream;
-                        video.play();
-                    })
-                    .catch(function (err) {
-                        console.log("An error occured! " + err);
-                    });
-            
-            video.addEventListener('canplay', function (ev) {
-                if (!streaming) {
-                    height = video.videoHeight / (video.videoWidth / width);
-                    video.setAttribute('width', width);
-                    video.setAttribute('height', height);
-                    canvas.setAttribute('width', width);
-                    canvas.setAttribute('height', height);
-            
-                    streaming = true;
-                }
-            }, false);
-            
-            startbutton.addEventListener('click', function (ev) {
-                takepicture();
-                ev.preventDefault();
-            }, false);
-            
-            clearphoto();
-            
-            function clearphoto() {
-                var context = canvas.getContext('2d');
-                context.fillStyle = "#AAA";
-                context.fillRect(0, 0, canvas.width, canvas.height);
-            }
-            
-            function takepicture() {
-                var context = canvas.getContext('2d');
-                if (width && height) {
-                    canvas.width = width;
-                    canvas.height = height;
-                    context.drawImage(video, 0, 0, width, height);
-            
-                    var dataURL = canvas.toDataURL("image/jpeg", 0.95);
-                    if (dataURL && dataURL != "data:,") {
-                        var fileName = generateImageName();
-                        uploadimage(dataURL, fileName);
-                    } else {
-                        alert("Image not available");
-                    }
-                } else {
-                    clearphoto();
-                }
-            }
-            
-            function generateImageName() {
-                imageName = "hey"
-                return imageName;
-            }
-            
-            function uploadimage(dataurl, filename) {
-                ... upload logic here ...
-            }
-            </script>-->
+  
+
 
 </body>
 

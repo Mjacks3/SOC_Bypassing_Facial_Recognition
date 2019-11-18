@@ -5,6 +5,7 @@ import zipfile
 import smtplib
 from email.mime.multipart import MIMEMultipart 
 from email.mime.text import MIMEText
+import base64
 
 from freeman import *
 device = "cpu"
@@ -121,7 +122,7 @@ def train():
 
     #train 
     configurations = {
-        "num_epochs":1,
+        "num_epochs":20,
         "beta":0.6,
         "learning_rate":.0004,
         "pos_source":"user_train_data/"+most_recent_name
@@ -135,7 +136,7 @@ def train():
         
     #email noify
     print("stub notify")
-    notify_completion()
+    #notify_completion()
 
     return jsonify(message = 'EZ 2'), 200
 
@@ -177,6 +178,46 @@ def acct_test():
     #print(req_json)
 
     return jsonify(message = 'file verified successfully'), 200
+
+import cv2
+
+#Utils
+@app.route("/acct_test_v2", methods=['GET','POST'])
+def acct_test_v2():
+    if request.method == 'POST':
+        req_json = request.get_json(silent=True) or request.form
+        processed_json = req_json.to_dict()
+
+        account_name = processed_json["name"]
+        print(account_name)
+
+        project = []
+        
+        if os.path.exists("user_account_models/"+account_name):
+            project.append(load_project("user_account_models/"+account_name, account_name))
+        else:
+            print("No Project Found")
+            return jsonify(message = 'No Acct'), 200
+
+
+        pic = processed_json["image"]
+        pic = pic.replace("data:image/jpeg;base64,","")
+
+        imgdata = base64.b64decode(pic)
+        
+        with open("user_account_models/"+account_name+"/"+account_name+"_verify", 'wb') as f:
+            f.write(imgdata)
+
+        
+        validate(project[0][1],project[0][0],"user_account_models/"+account_name+"/"+account_name+"_verify")
+
+
+
+        return jsonify(message = 'file_v2 verified successfully'), 200
+
+    return jsonify(message = 'file_v2 verified successfully'), 200
+
+
 
 
 if __name__ == "__main__":
