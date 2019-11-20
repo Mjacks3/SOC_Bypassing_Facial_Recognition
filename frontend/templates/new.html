@@ -30,6 +30,43 @@ Although you can use them, for a more unique website, replace these images with 
     <!-- Custom Fonts from Google -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
     
+    <style>
+
+      
+
+        .slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 25px;
+        background: #d3d3d3;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+        }
+
+        .slider:hover {
+        opacity: 1;
+        }
+
+        .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        background: #4CAF50;
+        cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+        width: 25px;
+        height: 25px;
+        background: #4CAF50;
+        cursor: pointer;
+        }
+
+    </style>
+
 </head>
 
 <body>
@@ -77,13 +114,35 @@ Although you can use them, for a more unique website, replace these images with 
                 </div>
 
                 <div class="col-sm-6">
-                    <h2 class="section-header">New User</h2>
-                    <p class="lead text-muted">Enter a name and upload selfies or take them yourself!</p>
-                    
+                    <h1 class="section-header">New User</h1>
+
+                    <p class="lead text-muted">Enter your name!</p>
                     <input type="text" class="form-control" id="training_name" placeholder="Enter User Name">
-                    <hr>
-                    <div>
+                    <br>
+
+                    <p class="lead text-muted">Enter your email!</p>
+                    <input type="text" class="form-control" id="email" placeholder="Enter UMBC email">
                     
+                    <hr>
+
+                    <p class="section-header">Advanced Settings: Hyperparamter Settings!</p>
+                    <br>
+
+                    <p class="lead text-muted">Number Epochs</p>
+                    <input type="range" min="1" max="500" value="25" step="1" class="slider" id="epoch_slider">
+                     <p>Value: <span id="epoch_value"></span></p>
+                    <br>
+
+
+                    <p class="lead text-muted">Learning Rate</p>
+                    <input type="range" min=".0001" max=".001" value=".0003" step=".00001" class="slider" id="lr_slider">
+                    <p>Value: <span id="lr_value"></span></p>
+
+
+                    <p class="lead text-muted">Beta 1 Value</p>
+                    <input type="range" min=".1" max=".99" value=".5" step=".01"  class="slider" id="beta_slider">
+                    <p>Value: <span id="beta_value"></span></p>
+                    <hr>
 
                     <p class="lead text-muted">Select an Input Type</p>
 
@@ -135,6 +194,32 @@ Although you can use them, for a more unique website, replace these images with 
     <!-- Custom Javascript -->
     <script src="static/js/custom.js"></script>
     <script src="static/js/freeman.js"></script>
+    <script>
+            var slider_epoch = document.getElementById("epoch_slider");
+            var output_epoch = document.getElementById("epoch_value");
+            output_epoch.innerHTML = slider_epoch.value;
+            
+            slider_epoch.oninput = function() {
+                output_epoch.innerHTML = this.value;
+            }
+
+            var slider_lr = document.getElementById("lr_slider");
+            var output_lr = document.getElementById("lr_value");
+            output_lr.innerHTML = slider_lr.value;
+            
+            slider_lr.oninput = function() {
+              output_lr.innerHTML = this.value;
+            }
+
+
+            var slider_beta = document.getElementById("beta_slider");
+            var output_beta = document.getElementById("beta_value");
+            output_beta.innerHTML = slider_beta.value;
+            
+            slider_beta.oninput = function() {
+              output_beta.innerHTML = this.value;
+            }
+     </script>
 
 </body>
 

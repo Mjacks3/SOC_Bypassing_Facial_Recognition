@@ -45,18 +45,27 @@ $(function() {
             console.log(textStatus);
             console.log(jqXHR);
             console.log('Success!');
+            epoch = document.getElementById("epoch_slider").value ;
+            lr = document.getElementById("lr_slider").value ;
+            beta = document.getElementById("beta_slider").value ;
+            email = document.getElementById("email").value ;
+
            $.ajax({
                 type: 'POST',
                 url: '/train',
-                data: JSON.stringify({"name":training_name}),
-                contentType: false,
-                processData: false,
-                dataType: 'json'
-            })
+                data: {
+                    "name":training_name,
+                    "email": email,
+                    "learning_rate":lr,
+                    "beta":beta,
+                    "epoch":epoch
+                }
+            });
 
         }).fail(function(data){
             console.log('error!');
-        });});}); 
+        });
+    });}); 
 
 
 
@@ -138,14 +147,23 @@ $(function() {
                 console.log(textStatus);
                 console.log(jqXHR);
                 console.log('Success!');
+
+                epoch = document.getElementById("epoch_slider").value ;
+                lr = document.getElementById("lr_slider").value ;
+                beta = document.getElementById("beta_slider").value ;
+                email = document.getElementById("email").value ;
+
                 $.ajax({
                     type: 'POST',
                     url: '/train',
-                    data: JSON.stringify({"name":training_name}),
-                    contentType: false,
-                    processData: false,
-                    dataType: 'json'
-                })
+                    data: {
+                        "name":training_name,
+                        "email": email,
+                        "learning_rate":lr,
+                        "beta":beta,
+                        "epoch":epoch
+                    }
+                });
             }).fail(function(data){
                 console.log('error!');
             });

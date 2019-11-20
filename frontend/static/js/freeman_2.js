@@ -40,8 +40,9 @@ $(function() {
 }); 
 
 
-var width = 320;
-var height = 0;
+var width = 250;
+var height = 700;
+
 var streaming = false;
 var latest_data_url;
 

@@ -19,12 +19,12 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
 
-def notify_completion():
+def notify_completion(email, name):
     msg = MIMEMultipart()
     msg['From'] = 'doitpaws@gmail.com'
-    msg['To'] = 'doitpaws@gmail.com'
+    msg['To'] = email
     msg['Subject'] = 'Account Creation on Project Freeman!'
-    message = 'You can access the Existing Account Page and Verify your identity'
+    message = name + ', your account has been created on Project Freeman and is now ready for testing'
     msg.attach(MIMEText(message))
 
     mailserver = smtplib.SMTP('smtp.gmail.com',587)
@@ -36,7 +36,7 @@ def notify_completion():
     mailserver.ehlo()
     mailserver.login('doitpaws@gmail.com', 'temp_passw0rd_dumb@ass')
 
-    mailserver.sendmail('doitpaws@gmail.com','doitpaws@gmail.com',msg.as_string())
+    mailserver.sendmail('doitpaws@gmail.com',email,msg.as_string())
     #mailserver.sendmail('me@gmail.com','you@gmail.com',msg.as_string())
 
     mailserver.quit()
@@ -155,20 +155,28 @@ def acct_creation_2():
 
 @app.route("/train", methods=['GET','POST'])
 def train():
+
     print("Made it!")
     print(most_recent_name)
     #load proj
     project = []
     project_trained= []
 
-    project.append(load_project("user_account_models/"+most_recent_name, most_recent_name))
+    req_json = request.get_json(silent=True) or request.form
+    processed_json = req_json.to_dict()
+    print(processed_json)
+    name = processed_json["name"]
+    email = processed_json["email"]
 
 
+    project.append(load_project("user_account_models/"+name, name))
+
+    
     #train 
     configurations = {
-        "num_epochs":20,
-        "beta":0.6,
-        "learning_rate":.0004,
+        "num_epochs": int(processed_json["epoch"]),
+        "beta": float(processed_json["beta"]),
+        "learning_rate": float(processed_json["learning_rate"]),
         "pos_source":"user_train_data/"+most_recent_name,
         "neg_source":"data/stock_neg_color"
     }
@@ -177,11 +185,13 @@ def train():
     project_trained.append( train_project_plus_negatives(project[0][0],project[0][1], configurations))
 
     # then save
-    save_project("user_account_models/"+most_recent_name, most_recent_name ,project_trained[0][1],project_trained[0][0])
+    save_project("user_account_models/"+name, name ,project_trained[0][1],project_trained[0][0])
         
     #email noify
     print("stub notify")
-    #notify_completion()
+    if(email):
+        notify_completion(email,name )
+    
 
     return jsonify(message = 'EZ 2'), 200
 
