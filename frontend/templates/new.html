@@ -78,21 +78,42 @@ Although you can use them, for a more unique website, replace these images with 
 
                 <div class="col-sm-6">
                     <h2 class="section-header">New User</h2>
-                    <p class="lead text-muted">Enter a name and upload a zipped file of about 10-15 selfies to initialize your account!</p>
-     
+                    <p class="lead text-muted">Enter a name and upload selfies or take them yourself!</p>
                     
+                    <input type="text" class="form-control" id="training_name" placeholder="Enter User Name">
+                    <hr>
                     <div>
                     
+
+                    <p class="lead text-muted">Select an Input Type</p>
+
+                    <input type="radio" id="manual_radio" name="train_type"  checked="checked" value="A">Manual Upload<br>
+                    <input type="radio" id="auto_radio"   name="train_type" value="B"> Selfie Mode <br>  
+
                     <form id="uploadform" method="post" enctype="multipart/form-data">
-                     <input type="text" class="form-control" id="training_name" placeholder="Enter User Name">
                      <br>
                      <input type="file" class="custom-file-input " name="file" type="file" id="training_data">
                      <label for="training_data">Select zipped package of selfies</label>
+                     <br>
+                     <br>
+                     <button type="button" id="initialize_training_button" class="btn btn-lg btn-primary ">Create_Account</button> 
                     </form>
 
+
                     <br>
+
+                    <form id="uploadform4" method="post" style="display: none" multipart/form-data">
+                    <p class="lead text-muted">Number Shots Taken:  <font aside id="num_shots"></aside>  </p>
+
+                    <div class="camera">
+                    <video id="video">Video stream not available.</video> <button id="startbutton">Take photo</button>
+                    <canvas id="canvas"></canvas> 
+                    </div>
                     <br>
-                    <button type="button" id="initialize_training_button" class="btn btn-lg btn-primary ">Create_Account</button>
+                    <button type="button" id="initialize_training_button_v2" class="btn btn-lg btn-primary " style="background-color:blue">Create Account</button>
+                    </form>
+
+
 
                     </div>
                 </div>                

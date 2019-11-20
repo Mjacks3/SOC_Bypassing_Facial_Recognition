@@ -94,7 +94,51 @@ def acct_creation():
         os.remove(zip_loc)
 
         project = []
-        name = str(manualSeed)
+        project.append(instantiate([]))
+        global most_recent_name
+        most_recent_name = account_name
+
+        #Always save project at end of run
+        save_project("user_account_models/"+account_name, account_name ,project[0][1],project[0][0])
+        
+        print(" \nProgam Finished. \nExiting... Yeet")
+
+        return jsonify(message = 'EZ 1'),200
+
+    return jsonify(message = 'Nothing Happened'), 200
+
+
+
+#Utils
+@app.route("/acct_creation_v2", methods=['GET','POST'])
+def acct_creation_2():
+    if request.method == 'POST':
+        req_json = request.get_json(silent=True) or request.form
+        processed_json = req_json.to_dict()
+        account_name = processed_json["name"]
+        selfies =  json.loads(processed_json["images"])
+
+        if not os.path.exists("user_train_data/"+account_name ):
+            os.makedirs("user_train_data/"+account_name )
+            os.makedirs("user_train_data/"+account_name+"/"+account_name)
+            os.makedirs("user_account_models/"+account_name )
+        else: 
+            print("Account Already Exists!!!")
+            return jsonify(message = 'Account Already Exists'), 200
+
+        count = 0 
+        for selfie in selfies:
+
+            selfie = selfie.replace("data:image/jpeg;base64,","")
+            print(selfie)
+            imgdata = base64.b64decode(selfie)
+        
+            with open("user_train_data/"+account_name+"/"+account_name+"/"+account_name+str(count)+".jpeg", 'wb') as f:
+                f.write(imgdata)
+
+            count += 1
+
+        project = []
         project.append(instantiate([]))
         global most_recent_name
         most_recent_name = account_name
@@ -125,7 +169,8 @@ def train():
         "num_epochs":20,
         "beta":0.6,
         "learning_rate":.0004,
-        "pos_source":"user_train_data/"+most_recent_name
+        "pos_source":"user_train_data/"+most_recent_name,
+        "neg_source":"data/stock_neg_color"
     }
 
 
