@@ -54,10 +54,6 @@ def home():
 def index():
     return render_template('index.html')
 
-@app.route("/about")
-def about():
-    return render_template('bout.html')
-
 @app.route("/existing")
 def existing():
     return render_template('existing.html')
@@ -190,7 +186,8 @@ def train():
     #email noify
     print("stub notify")
     if(email):
-        notify_completion(email,name )
+        #notify_completion(email,name )
+        pass
     
 
     return jsonify(message = 'EZ 2'), 200

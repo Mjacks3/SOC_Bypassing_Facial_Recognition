@@ -12,7 +12,7 @@ Although you can use them, for a more unique website, replace these images with 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <title>Business 2</title>
+    <title>Freeman</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="static/css/bootstrap.min.css" rel="stylesheet">
@@ -85,19 +85,16 @@ Although you can use them, for a more unique website, replace these images with 
             <!-- Navbar links -->
             <div class="collapse navbar-collapse" id="navbar">
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="active">
-                            <a href="index">Home</a>
-                        </li>
-                        <li  class="active">
-                            <a href="new">New User</a>
-                        </li>
-                        <li  class="active">
-                            <a href="existing">Existing User</a>
-                        </li>
-                        <li  class="active">
-                            <a href="about">About Us</a>
-                        </li>
-                    </ul>
+                            <li  class="active">
+                                <a href="index"><b>Home</b></a>
+                            </li>
+                            <li  class="active">
+                                <a href="new"> <b> New User</b> </a>
+                            </li>
+                            <li  class="active">
+                                <a href="existing"><b>Existing User</b></a>
+                            </li>
+                        </ul>
                   
         </div><!-- /.container -->
     </nav>
@@ -110,22 +107,22 @@ Although you can use them, for a more unique website, replace these images with 
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
-                    <img class="img-responsive img-circle center-block" src="static/images/microphone.jpg" alt="">
+                    <img class="img-responsive img-circle center-block" src="static/images/fr5.jpg" alt="">
                 </div>
 
                 <div class="col-sm-6">
                     <h1 class="section-header">New User</h1>
 
-                    <p class="lead text-muted">Enter your name!</p>
+                    <p class="lead text-muted">Enter your name:</p>
                     <input type="text" class="form-control" id="training_name" placeholder="Enter User Name">
                     <br>
 
-                    <p class="lead text-muted">Enter your email!</p>
+                    <p class="lead text-muted">Enter your email:</p>
                     <input type="text" class="form-control" id="email" placeholder="Enter UMBC email">
                     
                     <hr>
 
-                    <p class="section-header">Advanced Settings: Hyperparamter Settings!</p>
+                    <p class="section-header">Advanced : Hyperparamter Settings</p>
                     <br>
 
                     <p class="lead text-muted">Number Epochs</p>
@@ -165,11 +162,11 @@ Although you can use them, for a more unique website, replace these images with 
                     <p class="lead text-muted">Number Shots Taken:  <font aside id="num_shots"></aside>  </p>
 
                     <div class="camera">
-                    <video id="video">Video stream not available.</video> <button id="startbutton">Take photo</button>
+                    <video id="video">Video stream not available.</video> <button type="button" class="btn btn-lg btn-primary " style="background-color:blue" id="startbutton">Take photo</button>
                     <canvas id="canvas"></canvas> 
                     </div>
                     <br>
-                    <button type="button" id="initialize_training_button_v2" class="btn btn-lg btn-primary " style="background-color:blue">Create Account</button>
+                    <button type="button" id="initialize_training_button_v2" class="btn btn-lg btn-primary ">Create Account</button>
                     </form>
 
 
