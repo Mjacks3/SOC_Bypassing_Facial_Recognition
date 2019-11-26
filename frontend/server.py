@@ -10,6 +10,7 @@ import base64
 from freeman import *
 device = "cpu"
 
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
@@ -78,8 +79,10 @@ def acct_creation():
             return jsonify(message = 'Account Already Exists'), 200
 
         
-        updir = os.path.join(basedir, 'upload/')
-        zip_loc = os.path.join(updir, account_name)
+        #updir = os.path.join(basedir, 'upload/')
+        zip_loc = 'upload/'+account_name
+        #zip_loc = os.path.join('upload/')
+        #zip_loc = os.path.join(updir, account_name)
         files.save(zip_loc)
 
         with zipfile.ZipFile(zip_loc,"r") as zip_ref:
@@ -170,6 +173,7 @@ def train():
     
     #train 
     configurations = {
+
         "num_epochs": int(processed_json["epoch"]),
         "beta": float(processed_json["beta"]),
         "learning_rate": float(processed_json["learning_rate"]),
@@ -186,7 +190,7 @@ def train():
     #email noify
     print("stub notify")
     if(email):
-        #notify_completion(email,name )
+        notify_completion(email,name )
         pass
     
 
@@ -216,14 +220,14 @@ def acct_test():
         files.save("user_account_models/"+account_name+"/"+account_name+"_verify")
 
         
-        validate(project[0][1],project[0][0],"user_account_models/"+account_name+"/"+account_name+"_verify")
+        value = validate(project[0][1],project[0][0],"user_account_models/"+account_name+"/"+account_name+"_verify")
 
 
         #os.remove("user_account_models/"+account_name+"/"+account_name+"_verify")
         print(" \nProgam Finished 2. \nExiting 2... Yeet")
         
-
-        return jsonify(message = 'file verified successfully'), 200
+        return jsonify(message = value), 200
+        #return jsonify(message = 'file verified successfully'), 200
 
     #req_json = request.get_json(silent=True) or request.form
     print("Acct Verify DOne!")
@@ -231,7 +235,7 @@ def acct_test():
 
     return jsonify(message = 'file verified successfully'), 200
 
-import cv2
+#import cv2
 
 #Utils
 @app.route("/acct_test_v2", methods=['GET','POST'])
@@ -261,11 +265,11 @@ def acct_test_v2():
             f.write(imgdata)
 
         
-        validate(project[0][1],project[0][0],"user_account_models/"+account_name+"/"+account_name+"_verify")
+        value = validate(project[0][1],project[0][0],"user_account_models/"+account_name+"/"+account_name+"_verify")
 
 
 
-        return jsonify(message = 'file_v2 verified successfully'), 200
+        return jsonify(message = value), 200
 
     return jsonify(message = 'file_v2 verified successfully'), 200
 
