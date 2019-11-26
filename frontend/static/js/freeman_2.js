@@ -29,12 +29,30 @@ $(function() {
             processData: false,
             dataType: 'json'
         }).done(function(data, textStatus, jqXHR){
-            console.log(data);
-            console.log(textStatus);
-            console.log(jqXHR);
-            console.log('Success!');
+            console.log(data['message']);
+            //console.log(textStatus);
+            //console.log(jqXHR);
+            //console.log('Success!');
+
+            var raw = data['message'];
+            var percentage =  ((Math.abs(raw -.5)/.50)  *100).toFixed(2);
+
+            if (raw <= .5){
+               
+               alert("We Predict: NOT the account member with " + percentage + " confidence.");
+            }
+            else{
+
+                alert("We Predict: Is the same account number with " + percentage + " confidence.");
+            }
+            
+
+            
+
+
         }).fail(function(data){
             console.log('error!');
+            alert("Something went Wrong! Please check your username and your upload picture.");
         });
     });
 }); 
@@ -114,11 +132,25 @@ $('#initialize_test_button_v2').click(function() {
                 "name": test_name}
     }).done(function(data, textStatus, jqXHR){
         console.log(data);
-        console.log(textStatus);
-        console.log(jqXHR);
+        //console.log(textStatus);
+        //console.log(jqXHR);
         console.log('Success!');
+  
+        var raw = data['message'];
+        var percentage =  ((Math.abs(raw -.5)/.50)  *100).toFixed(2);
+
+        if (raw <= .5){
+           
+           alert("We Predict: NOT the account member with " + percentage + " confidence.");
+        }
+        else{
+
+            alert("We Predict: Is the same account number with " + percentage + " confidence.");
+        }
+
     }).fail(function(data){
         console.log('error!');
+        alert("Something went Wrong! Please check your username and your upload picture.");
     });
 });
 }); 

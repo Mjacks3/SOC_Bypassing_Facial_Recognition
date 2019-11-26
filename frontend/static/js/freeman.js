@@ -44,7 +44,8 @@ $(function() {
             console.log(data);
             console.log(textStatus);
             console.log(jqXHR);
-            console.log('Success!');
+            alert("Account Initialization Success! We will send an email when your account is ready for testing.");
+ 
             epoch = document.getElementById("epoch_slider").value ;
             lr = document.getElementById("lr_slider").value ;
             beta = document.getElementById("beta_slider").value ;
@@ -64,6 +65,7 @@ $(function() {
 
         }).fail(function(data){
             console.log('error!');
+            alert("Something went wrong during Account Initialization! Try under a new account name or check your files!");
         });
     });}); 
 
@@ -147,7 +149,8 @@ $(function() {
                 console.log(textStatus);
                 console.log(jqXHR);
                 console.log('Success!');
-
+                alert("Account Initialization Success! We will send an email when your account is ready for testing");
+ 
                 epoch = document.getElementById("epoch_slider").value ;
                 lr = document.getElementById("lr_slider").value ;
                 beta = document.getElementById("beta_slider").value ;
@@ -166,6 +169,8 @@ $(function() {
                 });
             }).fail(function(data){
                 console.log('error!');
+                alert("Something went wrong during Account Initialization! Try under a new account name or check your files!");
+
             });
         });
         }); 
